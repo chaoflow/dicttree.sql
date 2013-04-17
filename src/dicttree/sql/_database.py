@@ -12,9 +12,8 @@ from dicttree.sql._table import Table
 import ipdb
 
 class Database(object):
-    def __init__(self, dbpath):
-        #XXX add all other params, also allow other db types
-        self.engine = create_engine('sqlite:///' + dbpath)
+    def __init__(self, *args, **kw):
+        self.engine = create_engine(*args, **kw)
         self.metadata = MetaData(bind=self.engine)
         self.metadata.reflect(bind=self.engine)
         Session = sessionmaker(bind=self.engine)
@@ -27,8 +26,7 @@ class Database(object):
         return Table(self.metadata.tables[tablename], self.session)
 
     def __setitem__(self, dn, node):
-        pass
-        #XXX Declarative method creates table!
+        raise NotImplementedError()
 
     def __delitem__(self, tablename):
         table = self[tablename]

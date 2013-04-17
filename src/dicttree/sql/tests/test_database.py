@@ -6,8 +6,6 @@ from sqlalchemy import  Column, Integer, String
 from dicttree.sql.tests import mixins
 from dicttree.sql._table import Table
 
-import ipdb
-
 class TestDatabase(mixins.Sqlite, unittest.TestCase):
     # TODO: define format for entries suitable for easily adding them
     # to sql and usage in tests
@@ -20,20 +18,8 @@ class TestDatabase(mixins.Sqlite, unittest.TestCase):
         table = self.db['testtable']
         self.assertEqual('testtable', table.name)
 
-    def test_setitem(self):
-        othertable = schema.Table("othertable", self.db.metadata,
-                        Column('id', Integer, primary_key=True),
-                        Column('value', String(50))
-        )
-        dictothertable = Table(othertable, self.db.session)
-        self.db['testtable'] = dictothertable
-
-        table = self.db['othertable']
-        self.assertEqual('othertable', table.name)
-
     def test_len(self):
         self.assertEqual(1, len(self.db))
-        #XXX add another table and test
 
     def test_delitem(self):
         del self.db['testtable']

@@ -48,7 +48,8 @@ Error setting up testcase: %s
             self.session.add(Testtable(x))
         self.session.commit()
 
-        self.db = Database(dbpath = dbpath)
+        dbpath = 'sqlite:///' + dbpath
+        self.db = Database(dbpath)
 
     def tearDown(self):
         successful = sys.exc_info() == (None, None, None)

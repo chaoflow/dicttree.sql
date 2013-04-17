@@ -4,8 +4,6 @@ from sqlalchemy.exc import OperationalError
 
 from dicttree.sql.tests import mixins
 
-import ipdb
-
 class TestTable(mixins.Sqlite, unittest.TestCase):
     # TODO: define format for entries suitable for easily adding them
     # to sql and usage in tests
@@ -23,14 +21,26 @@ class TestTable(mixins.Sqlite, unittest.TestCase):
         self.assertEqual('b', table['2'].name)
         self.assertRaises(OperationalError, lambda: table['fail'].name)
 
-    def test_setitem(self):
+    def test_len(self):
+        self.assertEqual(2, len(self.db['testtable']))
+
+    def test_additem(self):
         pass
         #table = self.db['testtable']
-        #table['3'] = 'c'
-        #self.assertEqual('c', table['3'].name)
+        #table.additem('c')
+        #self.assertEqual(3, len(table))
 
-    def test_delitem(self):
-        table = self.db['testtable']
-        self.assertEqual('b', table['2'].name)
-        del table['2']
-        self.assertRaises(OpertationalError, lambda: table['b'].name)
+    def test_iterkeys(self):
+        keys =  self.db['testtable'].iterkeys()
+        self.assertEqual(keys.next(), 1)
+
+    def test_itervalues(self):
+        values = self.db['testtable'].itervalues()
+        self.assertEqual(values.next(), (1, 'a'))
+
+    def test_iteritems(self):
+        items = self.db['testtable'].iteritems()
+        item = items.next()
+        self.assertEqual(1, item[0])
+        self.assertEqual(1, item[1].id)
+        self.assertEqual('a', item[1].name)
