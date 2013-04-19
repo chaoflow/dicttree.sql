@@ -9,8 +9,6 @@ from dicttree.sql._views import ValuesView
 
 from dicttree.sql._table import Table
 
-import ipdb
-
 class Database(object):
     def __init__(self, *args, **kw):
         self.engine = create_engine(*args, **kw)
